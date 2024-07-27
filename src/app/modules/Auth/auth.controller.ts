@@ -8,6 +8,8 @@ const signUp = catchAsync(async (req, res) => {
   const result = await AuthService.signup(req.body);
 
   res.cookie("jwt", result.token, {
+    domain: ".vercel.app",
+    maxAge: 7 * 24 * 60 * 60 * 1000,
     secure: config.node_env === "production",
     httpOnly: true,
     sameSite: "none", // ! uncomment on production
@@ -25,6 +27,8 @@ const signIn = catchAsync(async (req, res) => {
   const result = await AuthService.signin(req.body);
 
   res.cookie("jwt", result.token, {
+    domain: ".vercel.app",
+    maxAge: 7 * 24 * 60 * 60 * 1000,
     secure: config.node_env === "production",
     httpOnly: true,
     sameSite: "none", // ! uncomment on production
