@@ -10,7 +10,7 @@ const signUp = catchAsync(async (req, res) => {
   res.cookie("jwt", result.token, {
     secure: config.node_env === "production",
     httpOnly: true,
-    // sameSite: 'none', // ! uncomment on production
+    sameSite: "none", // ! uncomment on production
   });
 
   sendResponse(res, {
@@ -27,7 +27,7 @@ const signIn = catchAsync(async (req, res) => {
   res.cookie("jwt", result.token, {
     secure: config.node_env === "production",
     httpOnly: true,
-    // sameSite: 'none', // ! uncomment on production
+    sameSite: "none", // ! uncomment on production
   });
 
   sendResponse(res, {
