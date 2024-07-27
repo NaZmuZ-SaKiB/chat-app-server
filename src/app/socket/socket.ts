@@ -22,7 +22,7 @@ export const server = http.createServer(app);
 
 export const io = new Server(server, {
   cors: {
-    origin: [config.front_end_url as string, "http://192.168.0.103:5173"],
+    origin: config.front_end_url,
     methods: ["GET", "POST"],
     credentials: true,
   },

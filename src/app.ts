@@ -11,7 +11,7 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(
   cors({
-    origin: [config.front_end_url as string, "http://192.168.0.103:5173"],
+    origin: config.front_end_url,
     credentials: true,
   })
 );
