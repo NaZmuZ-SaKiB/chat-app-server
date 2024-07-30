@@ -2,43 +2,26 @@ import httpStatus from "http-status";
 import catchAsync from "../../utils/catchAsync";
 import sendResponse from "../../utils/sendResponse";
 import { AuthService } from "./auth.service";
-import config from "../../config";
 
 const signUp = catchAsync(async (req, res) => {
   const result = await AuthService.signup(req.body);
-
-  res.cookie("jwt", result.token, {
-    domain: ".vercel.app",
-    maxAge: 7 * 24 * 60 * 60 * 1000,
-    secure: config.node_env === "production",
-    httpOnly: true,
-    sameSite: "none", // ! uncomment on production
-  });
 
   sendResponse(res, {
     statusCode: httpStatus.CREATED,
     success: true,
     message: "User created successfully",
-    data: result.user,
+    data: result,
   });
 });
 
 const signIn = catchAsync(async (req, res) => {
   const result = await AuthService.signin(req.body);
 
-  res.cookie("jwt", result.token, {
-    domain: ".vercel.app",
-    maxAge: 7 * 24 * 60 * 60 * 1000,
-    secure: config.node_env === "production",
-    httpOnly: true,
-    sameSite: "none", // ! uncomment on production
-  });
-
   sendResponse(res, {
     statusCode: httpStatus.CREATED,
     success: true,
     message: "Logged in successfully",
-    data: result.user,
+    data: result,
   });
 });
 
