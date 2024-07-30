@@ -6,7 +6,8 @@ import { User } from "../modules/User/user.model";
 import AppError from "../errors/AppError";
 
 const auth = catchAsync(async (req, res, next) => {
-  const token = req.cookies?.jwt?.replace("Bearer ", "");
+  // const token = req.cookies?.jwt?.replace("Bearer ", "");
+  const token = req.headers.authorization;
 
   if (!token) {
     throw new AppError(httpStatus.UNAUTHORIZED, "You are not logged in.");
