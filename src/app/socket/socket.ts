@@ -3,18 +3,7 @@ import http from "http";
 import config from "../config";
 import app from "../../app";
 
-type CandidateData = {
-  receiverId: string;
-  candidate: RTCIceCandidateInit;
-  senderId: string;
-};
-
-type OfferAnswerData = {
-  receiverId: string;
-  offer?: RTCSessionDescriptionInit;
-  answer?: RTCSessionDescriptionInit;
-  senderId: string;
-};
+type TCallType = "audio" | "video";
 
 const userSocketMap: Record<string, string> = {};
 
@@ -50,17 +39,21 @@ io.on("connection", (socket) => {
     io.emit("getOnlineUsers", Object.keys(userSocketMap));
   });
 
-  // Handle WebRTC signaling
-  socket.on("call", (data: { receiverId: string; senderId: string }) => {
-    const receiverSocketId = getReceiverSocketId(data.receiverId);
-    if (receiverSocketId) {
-      io.to(receiverSocketId).emit("call", {
-        senderId: data.senderId,
-      });
-    }
+  // Handle Call
+  socket.on(
+    "call",
+    (data: { receiverId: string; senderId: string; type: TCallType }) => {
+      const receiverSocketId = getReceiverSocketId(data.receiverId);
+      if (receiverSocketId) {
+        io.to(receiverSocketId).emit("call", {
+          senderId: data.senderId,
+          type: data.type,
+        });
+      }
 
-    console.log("Call event emitted to receiverId=", data.receiverId);
-  });
+      console.log("Call event emitted to receiverId=", data.receiverId);
+    }
+  );
 
   socket.on(
     "call-receiving",
@@ -87,12 +80,15 @@ io.on("connection", (socket) => {
     }
   });
 
-  socket.on("accept-call", (data: { senderId: string; receiverId: string }) => {
-    const receiverSocketId = getReceiverSocketId(data.senderId);
-    if (receiverSocketId) {
-      io.to(receiverSocketId).emit("accept-call", data);
+  socket.on(
+    "accept-call",
+    (data: { senderId: string; receiverId: string; type: TCallType }) => {
+      const receiverSocketId = getReceiverSocketId(data.senderId);
+      if (receiverSocketId) {
+        io.to(receiverSocketId).emit("accept-call", data);
+      }
     }
-  });
+  );
 
   socket.on("end-call", (data: { to: string }) => {
     const receiverSocketId = getReceiverSocketId(data.to);
