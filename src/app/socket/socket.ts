@@ -94,33 +94,10 @@ io.on("connection", (socket) => {
     }
   });
 
-  socket.on("offer", (data: OfferAnswerData) => {
-    const receiverSocketId = getReceiverSocketId(data.receiverId);
+  socket.on("end-call", (data: { to: string }) => {
+    const receiverSocketId = getReceiverSocketId(data.to);
     if (receiverSocketId) {
-      io.to(receiverSocketId).emit("offer", {
-        offer: data.offer,
-        senderId: data.senderId,
-      });
-    }
-  });
-
-  socket.on("answer", (data: OfferAnswerData) => {
-    const receiverSocketId = getReceiverSocketId(data.receiverId);
-    if (receiverSocketId) {
-      io.to(receiverSocketId).emit("answer", {
-        answer: data.answer,
-        senderId: data.senderId,
-      });
-    }
-  });
-
-  socket.on("candidate", (data: CandidateData) => {
-    const receiverSocketId = userSocketMap[data.receiverId];
-    if (receiverSocketId) {
-      io.to(receiverSocketId).emit("candidate", {
-        candidate: data.candidate,
-        senderId: data.senderId,
-      });
+      io.to(receiverSocketId).emit("end-call");
     }
   });
 });
