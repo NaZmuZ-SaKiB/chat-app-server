@@ -43,15 +43,17 @@ io.on("connection", (socket) => {
   socket.on(
     "call",
     (data: { receiverId: string; senderId: string; type: TCallType }) => {
-      const receiverSocketId = getReceiverSocketId(data.receiverId);
-      if (receiverSocketId) {
-        io.to(receiverSocketId).emit("call", {
-          senderId: data.senderId,
-          type: data.type,
-        });
-      }
+      setTimeout(() => {
+        const receiverSocketId = getReceiverSocketId(data.receiverId);
+        if (receiverSocketId) {
+          io.to(receiverSocketId).emit("call", {
+            senderId: data.senderId,
+            type: data.type,
+          });
+        }
 
-      console.log("Call event emitted to receiverId=", data.receiverId);
+        console.log("Call event emitted to receiverId=", data.receiverId);
+      }, 5000);
     }
   );
 
@@ -66,10 +68,14 @@ io.on("connection", (socket) => {
   );
 
   socket.on("reject-call", (data: { senderId: string; receiverId: string }) => {
-    const receiverSocketId = getReceiverSocketId(data.senderId);
-    if (receiverSocketId) {
-      io.to(receiverSocketId).emit("reject-call", data);
-    }
+    setTimeout(() => {
+      const receiverSocketId = getReceiverSocketId(data.senderId);
+
+      if (receiverSocketId) {
+        io.to(receiverSocketId).emit("reject-call", data);
+        console.log("call-rejected, receiverSocketId=", receiverSocketId);
+      }
+    }, 5000);
   });
 
   socket.on("cancel-call", (data: { senderId: string; receiverId: string }) => {
@@ -86,6 +92,7 @@ io.on("connection", (socket) => {
       const receiverSocketId = getReceiverSocketId(data.senderId);
       if (receiverSocketId) {
         io.to(receiverSocketId).emit("accept-call", data);
+        console.log("call answered, receiverSocketId=", receiverSocketId);
       }
     }
   );
