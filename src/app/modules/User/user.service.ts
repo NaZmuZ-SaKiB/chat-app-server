@@ -91,9 +91,14 @@ const searchUsers = async (userId: string, searchTerm: string) => {
   });
 };
 
+const update = async (userId: string, data: Partial<TUser>) => {
+  return await User.findByIdAndUpdate(userId, data, { new: true });
+};
+
 export const UserService = {
   getUserById,
   getUserByConversationId,
   getSidebarConversations,
   searchUsers,
+  update,
 };

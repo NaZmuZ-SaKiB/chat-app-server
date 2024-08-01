@@ -25,19 +25,19 @@ const signIn = catchAsync(async (req, res) => {
   });
 });
 
-const signOut = catchAsync(async (req, res) => {
-  res.clearCookie("jwt");
+const changePassword = catchAsync(async (req, res) => {
+  const result = await AuthService.changePassword(req?.user?.id, req.body);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "Logged out successfully",
-    data: null,
+    message: "Password changed successfully",
+    data: result,
   });
 });
 
 export const AuthController = {
   signUp,
   signIn,
-  signOut,
+  changePassword,
 };

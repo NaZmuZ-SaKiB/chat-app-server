@@ -63,7 +63,40 @@ const signin = async (payload: { email: string; password: string }) => {
   return { token, user: userData };
 };
 
+type TChangePassPayload = {
+  currentPassword: string;
+  newPassword: string;
+  confirmPassword: string;
+};
+
+const changePassword = async (userId: string, payload: TChangePassPayload) => {
+  if (payload.newPassword !== payload.confirmPassword) {
+    throw new AppError(httpStatus.FORBIDDEN, "Passwords do not match");
+  }
+
+  const user = await User.findById(userId).select("+password");
+
+  if (
+    !user ||
+    !(await bcrypt.compare(payload.currentPassword, user.password))
+  ) {
+    throw new AppError(httpStatus.UNAUTHORIZED, "Invalid password");
+  }
+
+  const hashedPassword = await bcrypt.hash(
+    payload.newPassword,
+    Number(config.bcrypt_salt_rounds)
+  );
+
+  await User.findByIdAndUpdate(userId, {
+    password: hashedPassword,
+  });
+
+  return null;
+};
+
 export const AuthService = {
   signup,
   signin,
+  changePassword,
 };

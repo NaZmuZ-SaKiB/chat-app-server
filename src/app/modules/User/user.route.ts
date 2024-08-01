@@ -14,4 +14,7 @@ router.get(
 );
 router.get("/:id", auth, UserController.getUserById);
 
+// PATCH
+router.patch("/", auth, UserController.update);
+
 export const UserRouter = router;

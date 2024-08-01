@@ -53,9 +53,21 @@ const searchUsers = catchAsync(async (req, res) => {
   });
 });
 
+const update = catchAsync(async (req, res) => {
+  const user = await UserService.update(req.user?.id, req.body);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "User updated successfully",
+    data: user,
+  });
+});
+
 export const UserController = {
   getSidebarConversations,
   getUserById,
   getUserByConversationId,
   searchUsers,
+  update,
 };
