@@ -3,6 +3,17 @@ import catchAsync from "../../utils/catchAsync";
 import sendResponse from "../../utils/sendResponse";
 import { AuthService } from "./auth.service";
 
+const getMe = catchAsync(async (req, res) => {
+  const result = await AuthService.getMe(req?.user?.id);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "User details",
+    data: result,
+  });
+});
+
 const signUp = catchAsync(async (req, res) => {
   const result = await AuthService.signup(req.body);
 
@@ -37,6 +48,7 @@ const changePassword = catchAsync(async (req, res) => {
 });
 
 export const AuthController = {
+  getMe,
   signUp,
   signIn,
   changePassword,

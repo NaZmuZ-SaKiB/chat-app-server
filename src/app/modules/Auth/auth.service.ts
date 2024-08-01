@@ -6,6 +6,10 @@ import { User } from "../User/user.model";
 import config from "../../config";
 import { createToken } from "../../utils/token";
 
+const getMe = async (userId: string) => {
+  return await User.findById(userId);
+};
+
 const signup = async (payload: TUser & { confirmPassword: string }) => {
   if (payload.password !== payload.confirmPassword) {
     throw new AppError(httpStatus.FORBIDDEN, "Passwords do not match");
@@ -96,6 +100,7 @@ const changePassword = async (userId: string, payload: TChangePassPayload) => {
 };
 
 export const AuthService = {
+  getMe,
   signup,
   signin,
   changePassword,
