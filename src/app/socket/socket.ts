@@ -95,7 +95,7 @@ io.on("connection", (socket) => {
           io.to(receiverSocketId).emit("accept-call", data);
           console.log("call answered, receiverSocketId=", receiverSocketId);
         }
-      }, 3000);
+      }, 5000);
     }
   );
 
