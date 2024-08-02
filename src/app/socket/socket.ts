@@ -89,13 +89,11 @@ io.on("connection", (socket) => {
   socket.on(
     "accept-call",
     (data: { senderId: string; receiverId: string; type: TCallType }) => {
-      setTimeout(() => {
-        const receiverSocketId = getReceiverSocketId(data.senderId);
-        if (receiverSocketId) {
-          io.to(receiverSocketId).emit("accept-call", data);
-          console.log("call answered, receiverSocketId=", receiverSocketId);
-        }
-      }, 5000);
+      const receiverSocketId = getReceiverSocketId(data.senderId);
+      if (receiverSocketId) {
+        io.to(receiverSocketId).emit("accept-call", data);
+        console.log("call answered, receiverSocketId=", receiverSocketId);
+      }
     }
   );
 
