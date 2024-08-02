@@ -42,7 +42,25 @@ The server is responsible for handling the chat messages and user authentication
 5. To build the project run following command:
    - `npm run build` or `yarn build`
 6. To run the build version of the project run following command:
+
    - `npm run start` or `yarn start`
+
+### Endpoints
+
+- **POST /api/auth/sign-in** : User login.
+- **POST /api/auth/sign-up** : User registraion.
+- **GET /api/auth/me** : Get logged in user.
+- **PATCH /api/auth/change-password** : Update Password.
+- **GET /api/user** : Search user by `searchTerm` query.
+- **GET /api/user/:id** : Get user by id.
+- **GET /api/user/sidebar** : Get items for auth user's sidebar conversations.
+- **GET /api/user/conversation/:conversationId** : Get the other user of the conversation.
+- **PATCH /api/user** : Update user info.
+- **GET /api/message/:conversationId** : Get conversation messages.
+- **POST /api/message/:conversationId** : Add new message.
+- **PATCH /api/message/:id/seen** : Seen a message.
+- **GET /api/conversation/:recipientId** : Get conversation with other user.
+- **POST /api/conversation/start/:recipientId** : Create a new conversation with other user.
 
 ### Deployment
 
