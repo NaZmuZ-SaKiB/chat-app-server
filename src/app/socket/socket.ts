@@ -33,8 +33,8 @@ io.on("connection", (socket) => {
 
   console.log("A user connected. socketId =", socket.id, "userId=", userId);
 
-  socket.on("disconnect", () => {
-    console.log("A user disconnected");
+  socket.on("disconnect", (reason) => {
+    console.log("A user disconnected", reason);
     delete userSocketMap[userId as string];
     io.emit("getOnlineUsers", Object.keys(userSocketMap));
   });
