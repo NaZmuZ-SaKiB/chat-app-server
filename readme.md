@@ -24,7 +24,7 @@ The server is responsible for handling the chat messages and user authentication
 1. Clone this repo:
    - `git clone https://github.com/NaZmuZ-SaKiB/chat-app-server.git`
 2. Install all necessary dependencies:
-   - `chat-app-server`
+   - `cd chat-app-server`
    - `npm install` or `yarn`
 3. Create a `.env` file in current directory and add following properties:
 
